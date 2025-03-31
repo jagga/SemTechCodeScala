@@ -14,7 +14,7 @@ object Population {
       val maxPopByDept = linesStream.getMaxPopulationByDept(lines);
       val minPopAllDept = linesStream.getMinPopulationForAllDepts(lines);
 
-      for (s: String <- maxPopByDept.keys) {
+      for (s: String <- maxPopByDept.keys.toSeq.sorted()) {
         val mp: Int = maxPopByDept(s);
         val tp: Int = totalPopByDept(s);
         println("Department " + s + ", Total Population " + tp.toString() + ", Max Population " + mp.toString());
