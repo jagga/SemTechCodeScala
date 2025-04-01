@@ -8,11 +8,12 @@ object Population {
     try {
       //C:\\Users\\19082\\SemtechCodeScalaExercise\\
       val filepath: String = s"src\\main\\resources\\${args(0)}"
-      val lines = linesStream.fileLines(filepath).drop(1);
+      var lines = linesStream.fileLines(filepath).drop(1);
+      val objs:List[PopObj] = linesStream.getPopulationObjs(lines)
       //lines = lines.drop(1);
-      val totalPopByDept = linesStream.getTotalPopulationByDept(lines);
-      val maxPopByDept = linesStream.getMaxPopulationByDept(lines);
-      val minPopAllDept = linesStream.getMinPopulationForAllDepts(lines);
+      val totalPopByDept = linesStream.getTotalPopulationByDept(objs);
+      val maxPopByDept = linesStream.getMaxPopulationByDept(objs);
+      val minPopAllDept = linesStream.getMinPopulationForAllDepts(objs);
 
       for (s: String <- maxPopByDept.keys.toSeq.sorted()) {
         val mp: Int = maxPopByDept(s);

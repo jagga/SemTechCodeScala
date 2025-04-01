@@ -7,8 +7,12 @@ import org.scalatestplus.junit
 import scala.collection.immutable.List
 
 class  PopulationMainTest  extends AssertionsForJUnit {
-  var lines : List[String] = null
-  var lineStrmObj : LineStreamProc  = new LineStreamProc()
+  var lineStrmObj = new LineStreamProc()
+  var lines = lineStrmObj.fileLines(s"src\\main\\resources\\population_2019.csv").drop(1)
+  var objs = lineStrmObj.getPopulationObjs(lines)
+  val totalPopByDept = lineStrmObj.getTotalPopulationByDept(objs)
+  val maxPopByDept = lineStrmObj.getMaxPopulationByDept(objs)
+  val minPopAllDept = lineStrmObj.getMinPopulationForAllDepts(objs)
 
   def setUpLines(file: String): List[String] = {
     val lines = scala.io.Source.fromFile(file).getLines().toList
@@ -16,11 +20,9 @@ class  PopulationMainTest  extends AssertionsForJUnit {
   }
 
 @Test def totalPopulationByDepartment(): Unit = {
-  var lines = lineStrmObj.fileLines(s"src\\main\\resources\\population_2019.csv").drop(1)
-  val totalPopByDept = lineStrmObj.getTotalPopulationByDept(lines)
-  
   lines = setUpLines("src/test/resources/totpopbydept.csv").drop(1)
-  val totalPopByDeptT = lineStrmObj.getTotalPopulationByDept(lines)
+  objs = lineStrmObj.getPopulationObjs(lines)
+  val totalPopByDeptT = lineStrmObj.getTotalPopulationByDept(objs)
 
   assertEquals(totalPopByDept.get("MANCHE"), totalPopByDeptT.get("MANCHE"))
   assertEquals(totalPopByDept.get("GIRONDE"), totalPopByDeptT.get("GIRONDE"))
@@ -33,11 +35,9 @@ class  PopulationMainTest  extends AssertionsForJUnit {
 }
 
 @Test def maxPopulationByDepartment(): Unit = {
-  var lines = lineStrmObj.fileLines(s"src\\main\\resources\\population_2019.csv").drop(1)
-  val maxPopByDept = lineStrmObj.getMaxPopulationByDept(lines)
-  
   lines = setUpLines("src/test/resources/maxpopbydept.csv").drop(1)
-  val maxPopByDeptT = lineStrmObj.getMaxPopulationByDept(lines)
+  objs = lineStrmObj.getPopulationObjs(lines)
+  val maxPopByDeptT = lineStrmObj.getMaxPopulationByDept(objs)
 
   assertEquals(maxPopByDept.get("MANCHE"), maxPopByDeptT.get("MANCHE"))
   assertEquals(maxPopByDept.get("GIRONDE"), maxPopByDeptT.get("GIRONDE"))
@@ -46,11 +46,9 @@ class  PopulationMainTest  extends AssertionsForJUnit {
 }
 
 @Test def minPopulationByAllDepartments(): Unit = {
-        var lines = lineStrmObj.fileLines(s"src\\main\\resources\\population_2019.csv").drop(1)
-        val minPopAllDept = lineStrmObj.getMinPopulationForAllDepts(lines)
-
         lines = setUpLines(s"src\\test\\resources\\minpopbyalldept.csv").drop(1)
-        val minPopAllDeptT = lineStrmObj.getMinPopulationForAllDepts(lines)
+        objs = lineStrmObj.getPopulationObjs(lines)
+        val minPopAllDeptT = lineStrmObj.getMinPopulationForAllDepts(objs)
 
         val minCities: Int = minPopAllDept.keys.min;
         val minCitiesT: Int = minPopAllDeptT.keys.min;
